@@ -37,7 +37,6 @@ const Dashboard = () => {
         }
 
         // If user is not admin or not logged in, redirect them
-        // @ts-expect-error
         if (session.user.role !== "ADMIN") {
             router.push("/");
             return;
