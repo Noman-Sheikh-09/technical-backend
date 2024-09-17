@@ -4,6 +4,14 @@ import { prisma } from "@/lib/prisma";
 import CongratsEmail from "../../../../../../emails/CongratsEmail";
 
 export async function POST() {
+    return await sendCongratsEmail();
+}
+
+export async function GET() {
+    return await sendCongratsEmail();
+}
+
+async function sendCongratsEmail() {
     try {
         await prisma.$connect();
 
