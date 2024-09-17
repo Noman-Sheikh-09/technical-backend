@@ -30,14 +30,16 @@ const Dashboard = () => {
         if (status === "loading") {
             return; // Do nothing while loading session
         }
-        if (!session) {
-            router.push("/login"); // Redirect to login page
+
+        if (!session || !session.user) {
+            router.push("/login");
             return;
         }
 
         // If user is not admin or not logged in, redirect them
-        if (!session || session.user.role !== "ADMIN") {
-            router.push("/login");
+        if (session.user.role !== "ADMIN") {
+            router.push("/");
+            return;
         }
     }, [session, status, router]);
 
