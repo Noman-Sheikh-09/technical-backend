@@ -35,9 +35,9 @@ const Dashboard = () => {
             router.push("/login");
             return;
         }
+        const user = session.user as User;
 
-        // If user is not admin or not logged in, redirect them
-        if (session.user.role !== "ADMIN") {
+        if (user.role !== "ADMIN") {
             router.push("/");
             return;
         }
