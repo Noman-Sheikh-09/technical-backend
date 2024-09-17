@@ -1,6 +1,8 @@
 "use client";
 import Loader from "@/components/loader";
 import { Table, TableBody, TableRow, TableCell } from "@tremor/react";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 interface User {
@@ -19,6 +21,25 @@ const Dashboard = () => {
     const [users, setUsers] = useState<User[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
+
+    const { data: session, status } = useSession();
+    const router = useRouter();
+    console.log(session, "session");
+
+    useEffect(() => {
+        if (status === "loading") {
+            return; // Do nothing while loading session
+        }
+        if (!session) {
+            router.push("/login"); // Redirect to login page
+            return;
+        }
+
+        // If user is not admin or not logged in, redirect them
+        if (!session || session.user.role !== "ADMIN") {
+            router.push("/login");
+        }
+    }, [session, status, router]);
 
     useEffect(() => {
         const fetchUsers = async () => {

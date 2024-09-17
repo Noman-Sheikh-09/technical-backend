@@ -31,6 +31,7 @@ function Login() {
                 email: mail,
                 password,
             });
+
             if (data?.error) return setError("Something went wrong. Please try again.");
 
             useTwoFaEmail.setState({ email: mail });
