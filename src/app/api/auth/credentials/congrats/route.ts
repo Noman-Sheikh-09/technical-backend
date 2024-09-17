@@ -17,12 +17,16 @@ async function sendCongratsEmail() {
 
         // Find the most recent user based on the `createdAt` field
         const latestUser = await prisma.user.findFirst({
+            where: {
+                congratsEmail: false, // Check if the congratulatory email has not been sent
+            },
             orderBy: {
-                createdAt: "desc", // Sort users by `createdAt` in descending order to get the most recent user
+                createdAt: "desc", // Get the most recent user
             },
             select: {
                 email: true,
                 name: true,
+                id: true,
             },
         });
         console.log(latestUser);
@@ -38,7 +42,11 @@ async function sendCongratsEmail() {
             subject: "Congratulations on Joining Us!",
             react: CongratsEmail({ name: latestUser.name || "User" }),
         });
-
+        // Update the user's congratsEmail to true
+        await prisma.user.update({
+            where: { id: latestUser.id },
+            data: { congratsEmail: true },
+        });
         return NextResponse.json({ message: "Congratulations email sent to the latest user" }, { status: 200 });
     } catch (error) {
         console.error("[SEND_CONGRATS_EMAIL_ERROR]", error);
