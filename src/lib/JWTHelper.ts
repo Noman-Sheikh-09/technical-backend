@@ -54,7 +54,7 @@ export const getUserId = async (token: string) => {
 export const getUserDetails = async (id: string) => {
     try {
         const response = await fetch(new URL(`/api/auth/getUser`, process.env.NEXT_PUBLIC_APP_URL), {
-            method: "POST",ye
+            method: "POST",
             body: JSON.stringify({ id }),
             headers: { "Content-Type": "application/json" },
         });
