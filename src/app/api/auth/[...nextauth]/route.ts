@@ -8,6 +8,23 @@ import nodemailer from "nodemailer";
 
 import bcrypt from "bcryptjs";
 
+declare module "next-auth" {
+    interface Session {
+        user: {
+            email: string;
+            name: string;
+            image?: string;
+            role?: string; // Add role to the session user
+        };
+    }
+
+    interface User {
+        id: string;
+        email: string;
+        role?: string;
+    }
+}
+
 const handler = NextAuth({
     // Configure one or more authentication providers
     adapter: PrismaAdapter(prisma),
@@ -40,11 +57,10 @@ const handler = NextAuth({
                             to: email,
                             from,
                             subject: `Authentication code: ${token}`,
-                            html: `your otp code is ${token}`,
+                            html: `Your OTP code is ${token}`,
                         },
                         (error) => {
                             if (error) {
-                                // logger.error('SEND_VERIFICATION_EMAIL_ERROR', email, error);
                                 console.error("SEND_VERIFICATION_EMAIL_ERROR", email, error);
                                 return reject(new Error(`SEND_VERIFICATION_EMAIL_ERROR ${error}`));
                             }
@@ -56,6 +72,20 @@ const handler = NextAuth({
             },
         }),
     ],
+    callbacks: {
+        async session({ session, user }) {
+            // Fetch the user's role from the database
+            const userRecord = await prisma.user.findUnique({
+                where: { id: user.id },
+                select: { role: true }, // Assuming the `role` field exists in your User model
+            });
+
+            // Add role to the session object
+            session.user.role = userRecord?.role;
+
+            return session;
+        },
+    },
 });
 
 export { handler as GET };
