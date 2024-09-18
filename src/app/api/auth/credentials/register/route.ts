@@ -46,12 +46,13 @@ export async function POST(req: Request) {
                 name: username,
                 email,
                 password: hashedPassword,
-                role: role.toUpperCase() as "USER" | "ADMIN",
+                role,
             },
             where: { email },
-            update: { name: username, password: hashedPassword, role: role.toUpperCase() as "USER" | "ADMIN" },
+            update: { name: username, password: hashedPassword, role },
             select: { email: true, id: true },
         });
+        console.log(newUser, "newUser");
 
         const verificationToken = await generateVerificationToken(newUser.id);
         resend.emails.send({
