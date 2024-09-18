@@ -46,10 +46,10 @@ export async function POST(req: Request) {
                 name: username,
                 email,
                 password: hashedPassword,
-                role: role.toUpperCase() as "USER" | "ADMIN",
+                role: role,
             },
             where: { email },
-            update: { name: username, password: hashedPassword, role: role.toUpperCase() as "USER" | "ADMIN" },
+            update: { name: username, password: hashedPassword, role: role },
             select: { email: true, id: true },
         });
 

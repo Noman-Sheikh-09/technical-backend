@@ -42,16 +42,13 @@ function Signup() {
             return;
         }
         const role = isAdmin ? "ADMIN" : "USER";
-        // Create the payload
         const payload = {
             username,
             email,
             password,
             role: role,
         };
-
-        setLoading(true); // Set loading state
-
+        setLoading(true);
         try {
             // Make the API call using fetch
             const response = await fetch("/api/auth/credentials/register", {
