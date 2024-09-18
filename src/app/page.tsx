@@ -32,8 +32,8 @@ export default function Home() {
         }
         const user = session.user as User;
 
-        if (user.role !== "ADMIN") {
-            router.push("/");
+        if (user.role == "ADMIN") {
+            router.push("/adminDashboard");
             return;
         }
     }, [session, status, router]);
