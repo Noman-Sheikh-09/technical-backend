@@ -43,7 +43,7 @@ const Input: React.FC<InputProps> = ({
             {showPasswordToggle && (
                 <div
                     onClick={togglePasswordVisibility}
-                    className="absolute right-3 top-[50%] transform -translate-y-[50%] cursor-pointer"
+                    className="absolute right-3 top-[70%] transform -translate-y-[50%] cursor-pointer"
                 >
                     {isPasswordVisible ? <FiEyeOff className="text-[#9CA3AF]" /> : <FiEye className="text-[#9CA3AF]" />}
                 </div>

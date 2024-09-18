@@ -72,6 +72,7 @@ function Signup() {
             setEmail("");
             setPassword("");
             setConfirmPassword("");
+            setIsAdmin(false);
         } catch (e) {
             const error = e as Error;
             setErrorMessage(error.message || "Error creating account");
