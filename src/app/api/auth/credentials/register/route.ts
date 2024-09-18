@@ -23,7 +23,6 @@ export async function POST(req: Request) {
         await prisma.$connect();
         const body = await req.json();
         const { username, email, password, role } = body;
-        console.log(role, "role");
 
         if (!email) {
             return NextResponse.json({ message: "Email is required" }, { status: 400 });
@@ -47,10 +46,10 @@ export async function POST(req: Request) {
                 name: username,
                 email,
                 password: hashedPassword,
-                role,
+                role: role.toUpperCase() as "USER" | "ADMIN",
             },
             where: { email },
-            update: { name: username, password: hashedPassword, role },
+            update: { name: username, password: hashedPassword, role: role.toUpperCase() as "USER" | "ADMIN" },
             select: { email: true, id: true },
         });
 
