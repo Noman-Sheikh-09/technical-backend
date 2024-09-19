@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { resend } from "@/lib/resend";
 import { prisma } from "@/lib/prisma";
 import CongratsEmail from "../../../../../../emails/CongratsEmail";
-import { subMinutes } from "date-fns"; // You can use date-fns for manipulating dates
+import { subHours } from "date-fns"; // You can use date-fns for manipulating dates
 
 export async function POST() {
     return await sendCongratsEmail();
@@ -17,9 +17,8 @@ async function sendCongratsEmail() {
         await prisma.$connect();
 
         // Calculate the time that is exactly one hour ago
-        // const oneHourAgo = subHours(new Date(), 1);
-        const oneHourAgo = subMinutes(new Date(), 5);
-        console.log(oneHourAgo, "oneHourAgo");
+        const oneHourAgo = subHours(new Date(), 1);
+        // const oneHourAgo = subMinutes(new Date(), 5);
         // Find users who were verified more than 1 hour ago and haven't received a congratulatory email
         const usersToCongratulate = await prisma.user.findMany({
             where: {
