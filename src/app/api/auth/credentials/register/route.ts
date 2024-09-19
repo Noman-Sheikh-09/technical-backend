@@ -23,6 +23,7 @@ export async function POST(req: Request) {
         await prisma.$connect();
         const body = await req.json();
         const { username, email, password, role } = body;
+        console.log(body, "body");
 
         if (!email) {
             return NextResponse.json({ message: "Email is required" }, { status: 400 });
@@ -63,6 +64,7 @@ export async function POST(req: Request) {
                 href: `${process.env.NEXT_PUBLIC_BASE_URL}/verificationToken?token=${verificationToken.token}&id=${verificationToken.identifier}`,
             }),
         });
+        console.log(verificationToken, "newUser afet verificaiton");
 
         return NextResponse.json({ user: newUser, message: "Verification email sent" }, { status: 201 });
     } catch (error) {
