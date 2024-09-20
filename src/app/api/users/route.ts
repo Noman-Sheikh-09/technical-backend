@@ -5,8 +5,6 @@ export async function GET() {
     try {
         await prisma.$connect();
 
-        // Calculate the date for the last 2 days
-
         const users = await prisma.user.findMany({
             where: {
                 role: "USER",
@@ -14,8 +12,16 @@ export async function GET() {
         });
 
         return NextResponse.json(
-            { message: "ALl Users Fetch Successfully", status: 200, users: users },
-            { status: 200 }
+            { message: "All Users Fetched Successfully", status: 200, users: users },
+            {
+                status: 200,
+                headers: {
+                    "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate",
+                    Pragma: "no-cache",
+                    Expires: "0",
+                    "Surrogate-Control": "no-store",
+                },
+            }
         );
     } catch (error: unknown) {
         console.error("[FETCH_USERS_ERROR]", error);

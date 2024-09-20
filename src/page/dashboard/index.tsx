@@ -46,13 +46,18 @@ const Dashboard = () => {
     useEffect(() => {
         const fetchUsers = async () => {
             try {
-                const response = await fetch("/api/users");
+                const response = await fetch("/api/users", {
+                    method: "GET",
+                    headers: {
+                        "Cache-Control": "no-cache",
+                    },
+                });
+
                 if (!response.ok) {
                     throw new Error("Network response was not ok");
                 }
 
                 const data = await response.json();
-
                 setUsers(data?.users);
             } catch (error) {
                 setError("Failed to fetch users");
@@ -63,6 +68,9 @@ const Dashboard = () => {
 
         fetchUsers();
     }, []);
+
+    console.log(users, "users");
+
     const activeUsersCount = users.filter((user: User) => user.emailVerified !== null).length;
     if (loading) {
         return <Loader />;
